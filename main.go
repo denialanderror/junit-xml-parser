@@ -10,6 +10,7 @@ import (
 func main() {
 	location := flag.String("xml", "", "Location of JUnit.xml file to parse")
 	duration := flag.Int("d", 500, "Threshold duration for tests in milliseconds")
+	output := flag.String("out", ".", "CSV output directory")
 	flag.Parse()
 
 	xmlFile, err := os.Open(*location)
@@ -36,4 +37,8 @@ func main() {
 	tests := DurationsGreaterThan(testFile, *duration)
 
 	fmt.Println(fmt.Sprintf("%v tests found with duration greater than %v", len(tests), *duration))
+
+	WriteToFile(tests, *output)
+
+	fmt.Println(fmt.Sprintf("Offending tests written to %v/junit.csv", *output))
 }
